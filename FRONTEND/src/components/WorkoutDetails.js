@@ -2,18 +2,21 @@ import React from "react";
 import useWorkoutsContext from "../hooks/useWorkoutsContext";
 import trashcan from "../trashcan.svg";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import Axios from "axios";
 
 const WorkoutDetails = ({ workout }) => {
 	const { dispatch } = useWorkoutsContext();
 
 	const handleClick = async () => {
-		const response = await fetch(`http://localhost:4000/api/workouts/${workout._id}`, {
-			method: "DELETE",
-		});
-		const json = await response.json();
+		try {
+			const response = await Axios.get(`http://localhost:4000/api/workouts/${workout._id}`, {
+				method: "DELETE",
+			});
+			const json = await response.data;
 
-		if (response.ok) {
 			dispatch({ type: "DELETE_WORKOUT", payload: json });
+		} catch (error) {
+			console.log("Unable to delete");
 		}
 	};
 
