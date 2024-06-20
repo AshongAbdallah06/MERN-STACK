@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import useWorkoutsContext from "../hooks/useWorkoutsContext";
+import Axios from "axios";
 
 const WorkoutForm = () => {
 	const { dispatch } = useWorkoutsContext();
@@ -14,19 +15,10 @@ const WorkoutForm = () => {
 
 		const workout = { title, load, reps };
 
-		const response = await fetch("http://localhost:4000/api/workouts", {
-			method: "POST",
-			body: JSON.stringify(workout),
-			headers: { "Content-Type": "application/json" },
-		});
+		try {
+			const response = await Axios.post("http://localhost:4000/api/workouts", workout);
 
-		const json = await response.json();
-
-		if (!response.ok) {
-			setErrors(json.errors);
-		}
-
-		if (response.ok) {
+			const json = await response.data;
 			setTitle("");
 			setLoad("");
 			setReps("");
@@ -34,6 +26,9 @@ const WorkoutForm = () => {
 
 			// Dispatch the function. Paylaod is the single json object we recieve when we create the workout
 			dispatch({ type: "CREATE_WORKOUT", payload: json });
+		} catch (error) {
+			const errors = error.response.data.errors;
+			setErrors(errors);
 		}
 	};
 
