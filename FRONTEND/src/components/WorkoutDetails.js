@@ -9,9 +9,9 @@ const WorkoutDetails = ({ workout }) => {
 
 	const handleClick = async () => {
 		try {
-			const response = await Axios.get(`http://localhost:4000/api/workouts/${workout._id}`, {
-				method: "DELETE",
-			});
+			const response = await Axios.delete(
+				`http://localhost:4000/api/workouts/${workout._id}`
+			);
 			const json = await response.data;
 
 			dispatch({ type: "DELETE_WORKOUT", payload: json });
