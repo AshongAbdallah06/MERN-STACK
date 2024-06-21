@@ -16,7 +16,7 @@ const loginUser = async (req, res) => {
 		const token = await createToken(user._id);
 		res.cookie("jwt", token, { maxAge: maxAge * 1000 });
 
-		res.status(200).json({ user, token });
+		res.status(200).json({ email, token });
 	} catch (error) {
 		console.log(error);
 		res.status(400).json({ error: error.message });
@@ -42,7 +42,7 @@ const handleErrors = (err) => {
 };
 
 const signupUser = async (req, res) => {
-	const { email, username, password } = req.body;
+	const { email } = req.body;
 
 	try {
 		const user = await User.create(req.body);
@@ -50,7 +50,7 @@ const signupUser = async (req, res) => {
 		const token = await createToken(user._id);
 		res.cookie("jwt", token, { maxAge: maxAge * 1000 });
 
-		res.status(200).json({ user, token });
+		res.status(200).json({ email, token });
 	} catch (error) {
 		console.log(error);
 		const errors = await handleErrors(error);
