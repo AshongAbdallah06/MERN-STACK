@@ -29,6 +29,7 @@ const Signup = () => {
 				value={email}
 			/>
 			<div className="error-text">{errors && errors.email}</div>
+
 			<label>Username</label>
 			<input
 				type="text"
@@ -36,6 +37,7 @@ const Signup = () => {
 				value={username}
 			/>
 			<div className="error-text">{errors && errors.username}</div>
+
 			<label>Password</label>
 			<input
 				type="password"

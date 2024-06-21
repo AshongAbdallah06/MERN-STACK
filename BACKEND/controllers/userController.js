@@ -7,22 +7,6 @@ const createToken = (id) => {
 	return jwt.sign({ id }, process.env.SECRET, { expiresIn: "3d" });
 };
 
-const loginUser = async (req, res) => {
-	const { email, password } = req.body;
-
-	try {
-		const user = await User.login(email, password);
-
-		const token = await createToken(user._id);
-		res.cookie("jwt", token, { maxAge: maxAge * 1000 });
-
-		res.status(200).json({ email, token });
-	} catch (error) {
-		console.log(error);
-		res.status(400).json({ error: error.message });
-	}
-};
-
 const handleErrors = (err) => {
 	let errors = { email: "", username: "", password: "" };
 
@@ -38,7 +22,31 @@ const handleErrors = (err) => {
 		errors.username = "Username already in use";
 	}
 
+	if (err.message.includes("Email not recognized")) {
+		errors.email = "Email not recognized";
+	}
+
+	if (err.message.includes("Incorrect Password")) {
+		errors.password = "Incorrect Password";
+	}
+
 	return errors;
+};
+
+const loginUser = async (req, res) => {
+	const { email, password } = req.body;
+
+	try {
+		const user = await User.login(email, password);
+
+		const token = await createToken(user._id);
+
+		res.status(200).json({ email, token });
+	} catch (error) {
+		console.log(error);
+		const errors = await handleErrors(error);
+		res.status(400).json(errors);
+	}
 };
 
 const signupUser = async (req, res) => {
@@ -48,7 +56,6 @@ const signupUser = async (req, res) => {
 		const user = await User.create(req.body);
 
 		const token = await createToken(user._id);
-		res.cookie("jwt", token, { maxAge: maxAge * 1000 });
 
 		res.status(200).json({ email, token });
 	} catch (error) {
