@@ -22,26 +22,17 @@ const userSchema = new Schema(
 			type: String,
 			required: [true, "Password is required"],
 			validate: [isStrongPassword, "Please enter a strong password"],
-			minlength: [3, "Username must be at least 3 characters"],
 		},
 	},
 	{ timestamps: true }
 );
 
-userSchema.statics.signup = async function (email, username, password) {
-	const userExists = await this.findOne({ email });
+userSchema.pre("save", async function (next) {
+	const salt = await genSalt(10);
+	this.password = await hash(this.password, salt);
 
-	if (!userExists) {
-		const salt = await genSalt(10);
-		const hashedPassword = await hash(password, salt);
-
-		console.log(this.password);
-
-		const user = this.create({ email, username, password: hashedPassword });
-		return user;
-	}
-	throw Error("Email has already been registered");
-};
+	next();
+});
 
 userSchema.statics.login = async function (email, password) {
 	const user = await this.findOne({ email });
