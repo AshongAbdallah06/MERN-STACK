@@ -2,7 +2,9 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const workoutRoutes = require("./routes/workouts");
+const userRoutes = require("./routes/users");
 const { connect } = require("mongoose");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 
@@ -33,8 +35,10 @@ app.use((req, res, next) => {
 	next();
 });
 
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
+app.use("/api/user", userRoutes);
 app.use("/api/workouts", workoutRoutes);
