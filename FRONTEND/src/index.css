@@ -75,7 +75,6 @@ input {
 input {
 	padding: 10px;
 	margin-top: 10px;
-	margin-bottom: 20px;
 	width: 100%;
 	border: 1px solid #ddd;
 	border-radius: 4px;
@@ -100,4 +99,29 @@ div.error {
 }
 input.error {
 	border: 1px solid var(--error);
+}
+.error-text {
+	color: var(--error);
+	/* margin-bottom: 20px; */
+	height: 30px;
+	font-size: 15px;
+}
+
+/* navbar */
+nav {
+	display: flex;
+	align-items: center;
+}
+
+nav a {
+	margin-left: 10px;
+}
+
+form.signup,
+form.login {
+	max-width: 400px;
+	margin: 40px auto;
+	padding: 20px;
+	background: #fff;
+	border-radius: 4px;
 }

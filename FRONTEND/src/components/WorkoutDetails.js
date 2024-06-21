@@ -16,6 +16,7 @@ const WorkoutDetails = ({ workout }) => {
 
 			dispatch({ type: "DELETE_WORKOUT", payload: json });
 		} catch (error) {
+			// todo: Display error to user
 			console.log("Unable to delete");
 		}
 	};
