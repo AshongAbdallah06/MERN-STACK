@@ -15,7 +15,8 @@ const handleErrors = (err) => {
 
 // GET all requests
 const getAllWorkouts = async (req, res) => {
-	const allWorkouts = await Workout.find().sort({ createdAt: -1 });
+	const user_id = req.user.id;
+	const allWorkouts = await Workout.find({ user_id }).sort({ createdAt: -1 });
 
 	res.status(200).json(allWorkouts);
 };
@@ -45,10 +46,9 @@ const getSingleWorkout = async (req, res) => {
 
 // POST NEW workout
 const createWorkout = async (req, res) => {
-	// const { title, reps, load } = req.body;
-
 	try {
-		const workout = await Workout.create(req.body);
+		const user_id = req.user._id.toString();
+		const workout = await Workout.create({ ...req.body, user_id });
 		res.status(201).json(workout);
 	} catch (error) {
 		const errors = await handleErrors(error);
