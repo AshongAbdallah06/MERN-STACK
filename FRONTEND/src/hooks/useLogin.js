@@ -22,6 +22,7 @@ export const useLogin = () => {
 
 			dispatch({ type: "LOGIN_SIGNUP", payload: data });
 			setIsLoading(false);
+			window.location.href = "/";
 		} catch (error) {
 			setIsLoading(false);
 			console.log(error);

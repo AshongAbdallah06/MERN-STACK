@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import useWorkoutsContext from "../hooks/useWorkoutsContext";
 import Axios from "axios";
+import useAuthContext from "../hooks/useAuthContext";
 
 const WorkoutForm = () => {
 	const { dispatch } = useWorkoutsContext();
+	const { user } = useAuthContext();
 
 	const [title, setTitle] = useState("");
 	const [load, setLoad] = useState("");
@@ -13,12 +15,22 @@ const WorkoutForm = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
+		if (!user) {
+			setErrors("You must be logged in");
+			return;
+		}
+
 		const workout = { title, load, reps };
 
 		try {
-			const response = await Axios.post("http://localhost:4000/api/workouts", workout);
+			const response = await Axios.post("http://localhost:4000/api/workouts", workout, {
+				headers: {
+					Authorization: `Bearer ${user.token}`,
+				},
+			});
 
 			const json = await response.data;
+
 			setTitle("");
 			setLoad("");
 			setReps("");
@@ -28,7 +40,7 @@ const WorkoutForm = () => {
 			dispatch({ type: "CREATE_WORKOUT", payload: json });
 		} catch (error) {
 			const errors = error.response.data.errors;
-			setErrors(errors);
+			setErrors("Please fill in all the fields");
 		}
 	};
 
@@ -71,7 +83,7 @@ const WorkoutForm = () => {
 
 			<button>Add Workout</button>
 
-			{errors && <div className="error">Please fill in all the fields</div>}
+			{errors && <div className="error">{errors}</div>}
 		</form>
 	);
 };

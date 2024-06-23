@@ -3,14 +3,26 @@ import useWorkoutsContext from "../hooks/useWorkoutsContext";
 import trashcan from "../trashcan.svg";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import Axios from "axios";
+import useAuthContext from "../hooks/useAuthContext";
 
 const WorkoutDetails = ({ workout }) => {
 	const { dispatch } = useWorkoutsContext();
+	const { user } = useAuthContext();
 
 	const handleClick = async () => {
+		if (!user) {
+			console.log("Unable to delete");
+			return;
+		}
+
 		try {
 			const response = await Axios.delete(
-				`http://localhost:4000/api/workouts/${workout._id}`
+				`http://localhost:4000/api/workouts/${workout._id}`,
+				{
+					headers: {
+						Authorization: `Bearer ${user.token}`,
+					},
+				}
 			);
 			const json = await response.data;
 
