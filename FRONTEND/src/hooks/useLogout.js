@@ -11,6 +11,7 @@ export const useLogout = () => {
 
 		// Dispatch logout action
 		dispatch({ type: "LOGOUT" });
+		window.location.href = "/login";
 	};
 
 	return { logout };

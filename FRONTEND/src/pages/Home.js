@@ -3,15 +3,21 @@ import WorkoutDetails from "../components/WorkoutDetails";
 import WorkoutForm from "../components/WorkoutForm";
 import useWorkoutsContext from "../hooks/useWorkoutsContext";
 import Axios from "axios";
+import useAuthContext from "../hooks/useAuthContext";
 
 const Home = () => {
 	const { workouts, dispatch } = useWorkoutsContext();
 	const [emptyWorkouts, setEmptyWorkouts] = useState("");
+	const { user } = useAuthContext();
 
 	useEffect(() => {
 		const fetchWorkouts = async () => {
 			try {
-				const response = await Axios.get("http://localhost:4000/api/workouts");
+				const response = await Axios.get("http://localhost:4000/api/workouts", {
+					headers: {
+						Authorization: `Bearer ${user.token}`,
+					},
+				});
 				const json = response.data; //  parse JSON responses
 
 				// Dispatch the action to set workouts
@@ -21,8 +27,10 @@ const Home = () => {
 			}
 		};
 
-		fetchWorkouts();
-	}, [dispatch]);
+		if (user) {
+			fetchWorkouts();
+		}
+	}, [dispatch, user]);
 
 	return (
 		<div className="home">
