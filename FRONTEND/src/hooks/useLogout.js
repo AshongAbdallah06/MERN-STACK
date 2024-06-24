@@ -1,9 +1,9 @@
-import { useState } from "react";
 import useAuthContext from "./useAuthContext";
-import Axios from "axios";
+import useWorkoutsContext from "./useWorkoutsContext";
 
 export const useLogout = () => {
 	const { dispatch } = useAuthContext();
+	const { dispatch: workoutsDispatch } = useWorkoutsContext();
 
 	const logout = async () => {
 		// Remove user from storage
@@ -11,6 +11,7 @@ export const useLogout = () => {
 
 		// Dispatch logout action
 		dispatch({ type: "LOGOUT" });
+		workoutsDispatch({ type: "SET_WORKOUTS", payload: null });
 		window.location.href = "/login";
 	};
 
