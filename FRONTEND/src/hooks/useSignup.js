@@ -12,7 +12,7 @@ export const useSignup = () => {
 		setErrors(null);
 		try {
 			const response = await Axios.post(
-				"http://localhost:4000/api/user/signup",
+				"https://mern-stack-3t1u.onrender.com/api/user/signup",
 				{
 					email,
 					username,
