@@ -13,7 +13,7 @@ const Home = () => {
 	useEffect(() => {
 		const fetchWorkouts = async () => {
 			try {
-				const response = await Axios.get("http://localhost:4000/api/workouts", {
+				const response = await Axios.get("https://mern-stack-3t1u.onrender.com/api/workouts", {
 					headers: {
 						Authorization: `Bearer ${user.token}`,
 					},
