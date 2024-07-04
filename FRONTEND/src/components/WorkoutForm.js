@@ -23,7 +23,7 @@ const WorkoutForm = () => {
 		const workout = { title, load, reps };
 
 		try {
-			const response = await Axios.post("http://localhost:4000/api/workouts", workout, {
+			const response = await Axios.post("https://mern-stack-3t1u.onrender.com/api/workouts", workout, {
 				headers: {
 					Authorization: `Bearer ${user.token}`,
 				},
