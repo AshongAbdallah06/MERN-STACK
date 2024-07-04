@@ -23,7 +23,7 @@ connect(process.env.MONGODB_URI)
 // Middleware
 app.use(
 	cors({
-		origin: "http://localhost:3000",
+		origin: "https://mern-stack-eight-ivory.vercel.app",
 		methods: ["GET", "POST", "PATCH", "DELETE"],
 		credentials: true,
 	})
