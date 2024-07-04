@@ -17,7 +17,7 @@ const WorkoutDetails = ({ workout }) => {
 
 		try {
 			const response = await Axios.delete(
-				`http://localhost:4000/api/workouts/${workout._id}`,
+				`https://mern-stack-3t1u.onrender.com/api/workouts/${workout._id}`,
 				{
 					headers: {
 						Authorization: `Bearer ${user.token}`,
